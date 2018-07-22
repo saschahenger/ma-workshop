@@ -1,6 +1,7 @@
 ﻿using AzureWorkshop.QueueDemo;
 using System;
 using System.Threading.Tasks;
+using AzureWorkshop.BlobDemo;
 
 namespace AzureWorkshop
 {
@@ -16,7 +17,7 @@ namespace AzureWorkshop
             var waitingForCommand = true;
             while (waitingForCommand)
             {
-                // Demo einlesen
+                // Demo auswählen
                 var arguments = (Console.ReadLine() ?? string.Empty)
                     .ToLower()
                     .Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
@@ -24,20 +25,25 @@ namespace AzureWorkshop
                 if (arguments.Length == 0)
                     arguments = new[] {string.Empty};
 
-                arguments[0] = "messenger";
+                arguments = new string[3];
+                arguments[0] = "dropbox";
+                arguments[1] = "henger";
+                arguments[2] = @"d:\ma-workshop\dropbox\";
 
                 // Demo starten
                 switch (arguments[0])
                 {
                     case "messenger":
-                        var messenger = new Messenger(account: arguments.Length > 1 ? arguments[1] : "henger");
+                        var messenger = new Messenger(account: arguments.Length > 1 ? arguments[1] : "anonym");
                         await messenger.Start();
                         waitingForCommand = false;
                         break;
 
                     case "dropbox":
-                        //var dropBox = new DropBox(account: "henger", folder: @"d:\ma-workshop\dropbox\");
-                        //dropBox.Start();
+                        var dropBox = new DropBox(
+                            account: arguments.Length > 1 ? arguments[1] : "anonym", 
+                            folder: arguments.Length > 2 ? arguments[2] : @"d:\ma-workshop\dropbox\");
+                        await dropBox.StartAsync();
                         return;
 
                     case "elastic":
@@ -48,7 +54,7 @@ namespace AzureWorkshop
                         break;
 
                     default:
-                        Console.WriteLine("Usage: messenger <accountName> | dropbox <accountName> | elastic | exit");
+                        Console.WriteLine("Usage: messenger <account> | dropbox <account> <folder>| elastic | exit");
                         break;
                 }
             }
