@@ -1,0 +1,11 @@
+
+
+AZURE DEMO
+	Erklären: Serverless, was bedeutet das?
+	Erklären: StorageAccount anlegen
+
+	Nuget
+		Newtonsoft.JSON
+		WindowsAzure.Storage
+	
+	CloudStorageAccount.Parse(_azureStorageConnectionString)
