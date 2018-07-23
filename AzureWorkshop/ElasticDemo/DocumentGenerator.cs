@@ -8,50 +8,7 @@ namespace AzureWorkshop.ElasticDemo
     {
         // Quelle: http://www.asu.cas.cz/~bezdek/moje_stranky/die%20schoensten%20deutschen%20gedichte.htm
 
-        public static IEnumerable<Dichter> GetDichters()
-        {
-            return new[]
-            {
-                new Dichter
-                {
-                    Vorname = "Friedrich",
-                    Nachname = "Hölderlin",
-                    Geburtsort = "Lauffen am Neckar",
-                    Geburtstag = new DateTimeOffset(new DateTime(1770, 3, 20)),
-                    Todesort = "Tübingen",
-                    Todestag = new DateTimeOffset(new DateTime(1843, 6, 7))
-                },
-                new Dichter
-                {
-                    Vorname = "Matthias",
-                    Nachname = "Claudius",
-                    Geburtsort = "Reinfeld",
-                    Geburtstag = new DateTimeOffset(new DateTime(1740, 8, 15)),
-                    Todesort = "Hamburg",
-                    Todestag = new DateTimeOffset(new DateTime(1815, 1, 21))
-                },
-                new Dichter
-                {
-                    Vorname = "Johann Wolfgang von",
-                    Nachname = "Goethe",
-                    Geburtsort = "Frankfurt am Main",
-                    Geburtstag = new DateTimeOffset(new DateTime(1749, 8, 28)),
-                    Todesort = "Weimar",
-                    Todestag = new DateTimeOffset(new DateTime(1832, 3, 22))
-                },
-                new Dichter
-                {
-                    Vorname = "Friedrich",
-                    Nachname = "Schiller",
-                    Geburtsort = "Marbach in Württemberg",
-                    Geburtstag = new DateTimeOffset(new DateTime(1759, 11, 10)),
-                    Todesort = "Weimar",
-                    Todestag = new DateTimeOffset(new DateTime(1805, 9, 5))
-                }
-            };
-        }
-
-        public static IEnumerable<Gedicht> GetGedichts()
+        public static IEnumerable<Gedicht> ErzeugeGedichte()
         {
             return new[]
             {
@@ -249,6 +206,49 @@ namespace AzureWorkshop.ElasticDemo
                     Dem reichte sie der Gaben beste,
                     Der Blumen allerschönste dar."
                 },
+            };
+        }
+
+        public static IEnumerable<Dichter> ErzeugeDichter()
+        {
+            return new[]
+            {
+                new Dichter
+                {
+                    Vorname = "Friedrich",
+                    Nachname = "Hölderlin",
+                    Geburtsort = "Lauffen am Neckar",
+                    Geburtstag = new DateTimeOffset(new DateTime(1770, 3, 20)),
+                    Todesort = "Tübingen",
+                    Todestag = new DateTimeOffset(new DateTime(1843, 6, 7))
+                },
+                new Dichter
+                {
+                    Vorname = "Matthias",
+                    Nachname = "Claudius",
+                    Geburtsort = "Reinfeld",
+                    Geburtstag = new DateTimeOffset(new DateTime(1740, 8, 15)),
+                    Todesort = "Hamburg",
+                    Todestag = new DateTimeOffset(new DateTime(1815, 1, 21))
+                },
+                new Dichter
+                {
+                    Vorname = "Johann Wolfgang von",
+                    Nachname = "Goethe",
+                    Geburtsort = "Frankfurt am Main",
+                    Geburtstag = new DateTimeOffset(new DateTime(1749, 8, 28)),
+                    Todesort = "Weimar",
+                    Todestag = new DateTimeOffset(new DateTime(1832, 3, 22))
+                },
+                new Dichter
+                {
+                    Vorname = "Friedrich",
+                    Nachname = "Schiller",
+                    Geburtsort = "Marbach in Württemberg",
+                    Geburtstag = new DateTimeOffset(new DateTime(1759, 11, 10)),
+                    Todesort = "Weimar",
+                    Todestag = new DateTimeOffset(new DateTime(1805, 9, 5))
+                }
             };
         }
     }

@@ -1,45 +1,113 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Nest;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
-using Nest;
 
 namespace AzureWorkshop.ElasticDemo
 {
+    // Note:  Elastic Search muss gestartet und http://localhost:9200/ muss erreichbar sein
+    //        Soll Eleastic Search auf einen anderen Rechner oder Port laufen muss ElasticConnectionString verwendet werden
     // NuGet: NEST
 
     class Bibliothek
     {
+        private readonly ElasticClient _client;
+
         public Bibliothek()
         {
-
+            _client = new ElasticClient();
         }
 
         public async Task StartAsync()
         {
-            var dichter = DocumentGenerator.GetDichters();
-            var gedichte = DocumentGenerator.GetGedichts();
-                   
-            var client = new ElasticClient();
+            var keepRunning = true;
+            while (keepRunning)
+            {
+                Console.WriteLine();
+                PrintOptions();
+                Console.Write("> ");
+                var key = Console.ReadKey().KeyChar;
+                Console.WriteLine();
 
-            var searchFluid =
-                client.Search<Person>(search => search.Index("people").Type("person").Query(q => q.MatchAll()));
-            var docs = searchFluid.Documents;
+                switch (key)
+                {
+                    case '1':
+                        await ImportiereAlleGedichteAsync();
+                        break;
+                    case '2':
+                        await LoescheAlleGedichteAsync();
+                        break;
+                    case '3':
+                        await ListeAlleDatenSortiertAufAsync();
+                        break;
+                    case '4':
+                        await SucheNachTextAsync();
+                        break;
 
-            var person = new Person { FirstName = "Jens", LastName = "Beneke" };
-            var result = await client.IndexAsync(person, i => i.Index("people"));
-            //var response = result.Result;
-
-            //var result = client.Index(person, i => i.Index("person"));
-
+                    case '0':
+                        keepRunning = false;
+                        break;
+                }
+            }
         }
 
-    }
+        private async Task ImportiereAlleGedichteAsync()
+        {
+            foreach (var gedicht in DocumentGenerator.ErzeugeGedichte())
+            {
+                var response = await _client.IndexAsync(gedicht, i => i.Index("gedicht"));
+                if (response.Result == Result.Created)
+                    Console.WriteLine($"Gedicht {gedicht.Titel} wurde importiert");
+            }
+        }
 
-    public class Person
-    {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-    }
+        private async Task LoescheAlleGedichteAsync()
+        {
+            var response = await _client.DeleteByQueryAsync<Gedicht>(s => s.MatchAll().Index("gedicht"));
+            Console.WriteLine($"Es wurden {response.Total} Gedichte gelöscht");
+        }
 
+        private async Task ListeAlleDatenSortiertAufAsync()
+        {
+            var gedichtResonse = await _client.SearchAsync<Gedicht>(s => s.MatchAll()
+                .Take(1000)
+                .Source(source => source.Includes(i => i.Fields("titel", "autor")))
+                .Sort(sort => sort.Ascending("autor.keyword").Ascending("titel.keyword"))
+                .Index("gedicht"));
+
+            gedichtResonse.Documents.ToList().ForEach(t => Console.WriteLine($"  {t.Autor}: {t.Titel}"));
+        }
+
+        private async Task SucheNachTextAsync()
+        {
+            Console.Write("Suche nach: > ");
+            var suchtext = Console.ReadLine();
+
+            var response = await _client.SearchAsync<Gedicht>(s => 
+                s.Query(q =>
+                q.SimpleQueryString(sqs => sqs.Query(suchtext)
+                    .AnalyzeWildcard()
+                    .Fields(f => f.Field("content"))))
+                .Index("gedicht")
+                .Take(1000));
+
+            Console.WriteLine($"Gedichte mit dem Suchtext {suchtext}");
+            response.Documents.ToList().ForEach(t =>
+            {
+                Console.WriteLine($"{t.Autor}: {t.Titel}");
+                Console.WriteLine($"{t.Content}");
+                Console.WriteLine();
+            });
+        }
+
+        private void PrintOptions()
+        {
+            Console.WriteLine("Wähle eine Option:");
+            Console.WriteLine("  1: Importiere alle Dichter und Gedichte");
+            Console.WriteLine("  2: Lösche alle Autoren und Gedichte");
+            Console.WriteLine("  3: Zeige alle Autoren und Gedichte an");
+            Console.WriteLine("  4: Suche nach Text");
+            Console.WriteLine("  0: Ende");
+        }
+    }
 }
