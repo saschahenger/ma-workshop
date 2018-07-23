@@ -18,12 +18,10 @@ namespace AzureWorkshop.QueueDemo
     internal class Messenger
     {
         private readonly string _account;
-        private readonly CloudQueueClient _client;
 
         public Messenger(string account)
         {
             _account = account;
-            _client = CloudStorageAccount.Parse(Settings.AzureConnectionString).CreateCloudQueueClient();
         }
 
         public async Task Start()
@@ -34,23 +32,19 @@ namespace AzureWorkshop.QueueDemo
 
         private async Task Receive()
         {
-            // eigene Queue
-            var queue = await EnsureQueueExists(_account);
+            // todo: eigene Queue ermitteln
+            await EnsureQueueExists(_account);
 
             while (true)
             {
-                // Nachricht laden
-                var cloudMessage = await queue.GetMessageAsync();
-                if (cloudMessage == null)
-                {
-                    await Task.Delay(1000);
-                    continue;
-                }
-                await queue.DeleteMessageAsync(cloudMessage);
+                // todo: Nachricht aus Queue laden
+                // todo: Nachricht ermitteln und ausgeben
 
-                // Nachricht ausgeben
-                var message = JsonConvert.DeserializeObject<Message>(cloudMessage.AsString);
-                Console.WriteLine($"{message.Date.ToShortTimeString()} - from {message.From}: {message.Content}");
+                Message message = null;
+                if(message!= null)
+                    Console.WriteLine($"{message.Date.ToShortTimeString()} - from {message.From}: {message.Content}");
+
+                await Task.Delay(1000);
             }
         }
 
@@ -69,26 +63,16 @@ namespace AzureWorkshop.QueueDemo
                 if(arguments.Length != 2)
                     continue;
 
-                // Empfänger Queue
-                var queueReference = await EnsureQueueExists(arguments[0]);
+                // todo: Empfänger Queue ermitteln
+                await EnsureQueueExists(arguments[0]);
 
-                // Nachricht verschicken
-                await queueReference.AddMessageAsync(
-                    new CloudQueueMessage(JsonConvert.SerializeObject(new Message
-                    {
-                        From = _account,
-                        To = arguments[0],
-                        Content = arguments[1],
-                        Date = DateTime.Now
-                    })));
+                // todo: Nachricht verschicken
             }
         }
 
-        private async Task<CloudQueue> EnsureQueueExists(string account)
+        private async Task EnsureQueueExists(string account)
         {
-            var queue = _client.GetQueueReference(account);
-            await queue.CreateIfNotExistsAsync();
-            return queue;
+            // todo: gegebenenfalls Queue erstellen und zurückgeben
         }
     }
 }

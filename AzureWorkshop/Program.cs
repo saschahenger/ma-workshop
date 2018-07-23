@@ -25,11 +25,6 @@ namespace AzureWorkshop
                 if (arguments.Length == 0)
                     arguments = new[] {string.Empty};
 
-                arguments = new string[3];
-                arguments[0] = "dropbox";
-                arguments[1] = "henger";
-                arguments[2] = @"d:\ma-workshop\dropbox\";
-
                 // Demo starten
                 switch (arguments[0])
                 {

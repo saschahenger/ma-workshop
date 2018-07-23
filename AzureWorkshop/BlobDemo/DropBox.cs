@@ -20,15 +20,13 @@ namespace AzureWorkshop.BlobDemo
      */
     class DropBox
     {
-        private readonly CloudBlobContainer _container;
         private readonly string _folder;
 
         public DropBox(string account, string folder)
         {
+            Console.WriteLine($"DROPBOX DEMO ({account})");
             _folder = folder;
-            _container = CloudStorageAccount.Parse(Settings.AzureConnectionString)
-                .CreateCloudBlobClient()
-                .GetContainerReference(account);
+            // todo: blob container für account erstellen
         }
 
         public async Task StartAsync()
@@ -46,7 +44,7 @@ namespace AzureWorkshop.BlobDemo
 
         private async Task EnsureAccountExists()
         {
-            await _container.CreateIfNotExistsAsync();
+            // todo: Sicherstellen, dass es einen Container für den Upload gibt
         }
 
         private async Task SyncFolderWithAccountAsync()
@@ -57,26 +55,9 @@ namespace AzureWorkshop.BlobDemo
                 var filePaths = Directory.GetFiles(_folder);
                 var fileNames = filePaths.Select(t => new FileInfo(t)).Select(t => t.Name).ToArray();
 
-                // remote Dateien
-                var blobItems = (await _container.ListBlobsSegmentedAsync(null)).Results.ToArray();
-                var blobNames = blobItems.Select(t => (CloudBlockBlob) t).Select(t => t.Name).ToArray();
-
-                // fehlende Dateien hochladen
-                var uploads = fileNames.Except(blobNames);
-                foreach (var upload in uploads)
-                {
-                    var path = filePaths.First(t => t.EndsWith(upload));
-                    var blobReference = _container.GetBlockBlobReference(upload);
-                    await blobReference.UploadFromFileAsync(path);
-                }
-
-                // fehlende Dateien runterladen
-                var downloads = blobNames.Except(fileNames);
-                foreach (var download in downloads)
-                {
-                    var blobReference = _container.GetBlockBlobReference(download);
-                    await blobReference.DownloadToFileAsync(Path.Combine(_folder, download), FileMode.Create);
-                }
+                // todo: remote Dateien ermitteln
+                // todo: fehlende Dateien hochladen
+                // todo: fehlende Dateien runterladen
 
                 // kurz warten
                 await Task.Delay(2000);
