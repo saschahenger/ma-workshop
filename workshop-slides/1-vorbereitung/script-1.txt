@@ -9,3 +9,5 @@ AZURE DEMO
 		WindowsAzure.Storage
 	
 	CloudStorageAccount.Parse(_azureStorageConnectionString)
+	
+	Todo: Testdateien für die DropBox
