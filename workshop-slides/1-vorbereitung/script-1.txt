@@ -1,5 +1,4 @@
 
-
 AZURE DEMO
 	Erklären: Serverless, was bedeutet das?
 	Erklären: StorageAccount anlegen
@@ -9,3 +8,48 @@ AZURE DEMO
 		WindowsAzure.Storage
 	
 	CloudStorageAccount.Parse(_azureStorageConnectionString)
+
+	
+	
+ELASTIC SEARCH DEMO
+	https://www.elastic.co/guide/en/elasticsearch/client/net-api/current/nest.html
+
+{
+	"From":"henger",
+	"To":"henger",
+	"Content":"bin ich schon drin?",
+	"Date":"2018-07-22T22:20:07.3104888+02:00"
+}	
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ES
+	https://www.devbridge.com/articles/getting-started-with-elastic-using-net-nest-library-part-two/ -> Simple Search with Paging and Sorting
+	https://www.devbridge.com/articles/getting-started-with-elastic-using-net-nest-library-part-three/
+	https://www.devbridge.com/articles/getting-started-with-elastic-using-net-nest-library-part-four/
+	
+	GET bereitstellung-ma2-article/_search?scroll=1m
+	{"_source":"ursprungsTrefferId","aggs":{"all_ids":{"terms":{"field":"ursprungsTrefferId","size":10}}},"sort":["_doc"]}
+	GET /_search/scroll
+	{"scroll":"1m","scroll_id":"DnF1ZXJ5VGhlbkZldGNoBQAAAAABtRmRFkRjZnZaRDhvU1lpOHRWb0w5ekRGbncAAAAAAbUZkhZEY2Z2WkQ4b1NZaTh0Vm9MOXpERm53AAAAAAG1GZAWRGNmdlpEOG9TWWk4dFZvTDl6REZudwAAAAABowo1FnE2UncyZnRoUnJ1aUxyNkRmTDhycGcAAAAAAVjcuxYzQ0RaQ0xLTFQ2dXZCZ0lKSEV5WkVR"}
+
+	GET _search
+	{"query":{"bool":{"must":[{"match":{"autor":"zoidberg555"}}],"filter":{"range":{"ma2ArbaId":{"gt":89682077}}}}}}
+	GET _search
+	{"query":{"match":{"headline":"Bitter ist das Ende der @HH_Freezers"}}}
+	GET _search
+	{"query":{"match_phrase":{"headline":"Bitter ist das Ende"}}}
+
+	GET _search
+	{
+	  "query": {
+		"match_phrase": {
+		  "headline": "Bitter ist das Ende"
+		}
+	  },
+	  "highlight": {
+		"fields": {
+		  "headline": {}
+		}
+	  }
+	}

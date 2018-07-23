@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using AzureWorkshop.BlobDemo;
+using AzureWorkshop.ElasticDemo;
 
 namespace AzureWorkshop
 {
@@ -26,7 +27,7 @@ namespace AzureWorkshop
                     arguments = new[] {string.Empty};
 
                 arguments = new string[3];
-                arguments[0] = "dropbox";
+                arguments[0] = "bibliothek";
                 arguments[1] = "henger";
                 arguments[2] = @"d:\ma-workshop\dropbox\";
 
@@ -46,7 +47,9 @@ namespace AzureWorkshop
                         await dropBox.StartAsync();
                         return;
 
-                    case "elastic":
+                    case "bibliothek":
+                        var bibliothek = new Bibliothek();
+                        await bibliothek.StartAsync();
                         return;
 
                     case "exit":
