@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace AzureWorkshop.ElasticDemo
 {
-    class DocumentGenerator
+    class GedichtGenerator
     {
         // Quelle: http://www.asu.cas.cz/~bezdek/moje_stranky/die%20schoensten%20deutschen%20gedichte.htm
 
@@ -206,49 +204,6 @@ namespace AzureWorkshop.ElasticDemo
                     Dem reichte sie der Gaben beste,
                     Der Blumen allerschönste dar."
                 },
-            };
-        }
-
-        public static IEnumerable<Dichter> ErzeugeDichter()
-        {
-            return new[]
-            {
-                new Dichter
-                {
-                    Vorname = "Friedrich",
-                    Nachname = "Hölderlin",
-                    Geburtsort = "Lauffen am Neckar",
-                    Geburtstag = new DateTimeOffset(new DateTime(1770, 3, 20)),
-                    Todesort = "Tübingen",
-                    Todestag = new DateTimeOffset(new DateTime(1843, 6, 7))
-                },
-                new Dichter
-                {
-                    Vorname = "Matthias",
-                    Nachname = "Claudius",
-                    Geburtsort = "Reinfeld",
-                    Geburtstag = new DateTimeOffset(new DateTime(1740, 8, 15)),
-                    Todesort = "Hamburg",
-                    Todestag = new DateTimeOffset(new DateTime(1815, 1, 21))
-                },
-                new Dichter
-                {
-                    Vorname = "Johann Wolfgang von",
-                    Nachname = "Goethe",
-                    Geburtsort = "Frankfurt am Main",
-                    Geburtstag = new DateTimeOffset(new DateTime(1749, 8, 28)),
-                    Todesort = "Weimar",
-                    Todestag = new DateTimeOffset(new DateTime(1832, 3, 22))
-                },
-                new Dichter
-                {
-                    Vorname = "Friedrich",
-                    Nachname = "Schiller",
-                    Geburtsort = "Marbach in Württemberg",
-                    Geburtstag = new DateTimeOffset(new DateTime(1759, 11, 10)),
-                    Todesort = "Weimar",
-                    Todestag = new DateTimeOffset(new DateTime(1805, 9, 5))
-                }
             };
         }
     }

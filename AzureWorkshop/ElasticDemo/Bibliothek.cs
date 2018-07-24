@@ -5,9 +5,14 @@ using System.Threading.Tasks;
 
 namespace AzureWorkshop.ElasticDemo
 {
-    // Note:  Elastic Search muss gestartet und http://localhost:9200/ muss erreichbar sein
-    //        Soll Eleastic Search auf einen anderen Rechner oder Port laufen muss ElasticConnectionString verwendet werden
-    // NuGet: NEST
+    /*
+     * Note:  Elastic Search muss gestartet und http://localhost:9200/ muss erreichbar sein
+     *        Soll Eleastic Search auf einen anderen Rechner oder Port laufen muss ElasticConnectionString verwendet werden
+     * NuGet: NEST
+     * Links: https://www.elastic.co/guide/en/elasticsearch/reference/current/_modifying_your_data.html
+     *        https://www.elastic.co/guide/en/elasticsearch/client/net-api/current/nest-getting-started.html
+     */
+
 
     class Bibliothek
     {
@@ -51,9 +56,19 @@ namespace AzureWorkshop.ElasticDemo
             }
         }
 
+        private void PrintOptions()
+        {
+            Console.WriteLine("Wähle eine Option:");
+            Console.WriteLine("  1: Importiere alle Gedichte");
+            Console.WriteLine("  2: Lösche alle Gedichte");
+            Console.WriteLine("  3: Sortiere alle Gedichte");
+            Console.WriteLine("  4: Suche im Text");
+            Console.WriteLine("  0: Ende");
+        }
+
         private async Task ImportiereAlleGedichteAsync()
         {
-            foreach (var gedicht in DocumentGenerator.ErzeugeGedichte())
+            foreach (var gedicht in GedichtGenerator.ErzeugeGedichte())
             {
                 var response = await _client.IndexAsync(gedicht, i => i.Index("gedicht"));
                 if (response.Result == Result.Created)
@@ -98,16 +113,6 @@ namespace AzureWorkshop.ElasticDemo
                 Console.WriteLine($"{t.Content}");
                 Console.WriteLine();
             });
-        }
-
-        private void PrintOptions()
-        {
-            Console.WriteLine("Wähle eine Option:");
-            Console.WriteLine("  1: Importiere alle Dichter und Gedichte");
-            Console.WriteLine("  2: Lösche alle Autoren und Gedichte");
-            Console.WriteLine("  3: Zeige alle Autoren und Gedichte an");
-            Console.WriteLine("  4: Suche nach Text");
-            Console.WriteLine("  0: Ende");
         }
     }
 }
