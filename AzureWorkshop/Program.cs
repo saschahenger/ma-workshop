@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using AzureWorkshop.BlobDemo;
+using AzureWorkshop.ElasticDemo;
 
 namespace AzureWorkshop
 {
@@ -23,7 +24,7 @@ namespace AzureWorkshop
                     .Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
 
                 if (arguments.Length == 0)
-                    arguments = new[] {string.Empty};
+                    arguments = new[] { string.Empty };
 
                 // Demo starten
                 switch (arguments[0])
@@ -36,12 +37,14 @@ namespace AzureWorkshop
 
                     case "dropbox":
                         var dropBox = new DropBox(
-                            account: arguments.Length > 1 ? arguments[1] : "anonym", 
+                            account: arguments.Length > 1 ? arguments[1] : "anonym",
                             folder: arguments.Length > 2 ? arguments[2] : @"d:\ma-workshop\dropbox\");
                         await dropBox.StartAsync();
                         return;
 
-                    case "elastic":
+                    case "bibliothek":
+                        var bibliothek = new Bibliothek();
+                        await bibliothek.StartAsync();
                         return;
 
                     case "exit":
